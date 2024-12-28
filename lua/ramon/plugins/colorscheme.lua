@@ -1,40 +1,39 @@
 return {
-  {
-    "folke/tokyonight.nvim",
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      local bg = "#011628"
-      local bg_dark = "#011423"
-      local bg_highlight = "#143652"
-      local bg_search = "#0A64AC"
-      local bg_visual = "#275378"
-      local fg = "#CBE0F0"
-      local fg_dark = "#B4D0E9"
-      local fg_gutter = "#627E97"
-      local border = "#547998"
-
-      require("tokyonight").setup({
-        style = "night",
-        on_colors = function(colors)
-          colors.bg = bg
-          colors.bg_dark = bg_dark
-          colors.bg_float = bg_dark
-          colors.bg_highlight = bg_highlight
-          colors.bg_popup = bg_dark
-          colors.bg_search = bg_search
-          colors.bg_sidebar = bg_dark
-          colors.bg_statusline = bg_dark
-          colors.bg_visual = bg_visual
-          colors.border = border
-          colors.fg = fg
-          colors.fg_dark = fg_dark
-          colors.fg_float = fg
-          colors.fg_gutter = fg_gutter
-          colors.fg_sidebar = fg_dark
-        end,
-      })
-      -- load the colorscheme here
-      vim.cmd([[colorscheme tokyonight]])
-    end,
-  },
+	{
+		"Mofiqul/dracula.nvim", -- Nome do plugin Dracula
+		priority = 1000, -- Certifique-se de carregar antes dos outros plugins
+		config = function()
+			require("dracula").setup({
+				colors = {
+					bg = "#282a36", -- Cor de fundo
+					fg = "#f8f8f2", -- Cor do texto
+					selection = "#44475a",
+					comment = "#6272a4",
+					red = "#ff5555",
+					orange = "#ffb86c",
+					yellow = "#f1fa8c",
+					green = "#50fa7b",
+					purple = "#bd93f9",
+					cyan = "#8be9fd",
+					pink = "#ff79c6",
+					bright_red = "#ff6e6e",
+					bright_green = "#69ff94",
+					bright_yellow = "#ffffa5",
+					bright_blue = "#d6acff",
+					bright_magenta = "#ff92df",
+					bright_cyan = "#a4ffff",
+					bright_white = "#ffffff",
+					menu = "#21222c",
+					visual = "#3e4452",
+					gutter_fg = "#4b5263",
+					nontext = "#3b4048",
+				},
+				show_end_of_buffer = true, -- Mostrar "~" no final do buffer
+				transparent_bg = false, -- Fundo transparente
+				italic_comment = true, -- Comentários em itálico
+			})
+			-- Carrega o esquema de cores
+			vim.cmd([[colorscheme dracula]])
+		end,
+	},
 }
