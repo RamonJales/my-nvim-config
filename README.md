@@ -7,6 +7,8 @@ The plugins will be installed automatically, if this not happen, go to `Lazy` wi
 
 If telescope does not works, so install `Ripgrep`.
 
+Install a clipboard provider, like `xclip` or `xsel`.
+
 Install `lazygit` with your package.
 
 The file `init.lua` in root directory calls `core` and `lazy` files.
