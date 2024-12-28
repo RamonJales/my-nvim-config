@@ -1,0 +1,187 @@
+-- -- ~/.config/nvim/lua/ramon/plugins/java.lua
+-- return {
+-- 	{
+-- 		"mfussenegger/nvim-jdtls",
+-- 		ft = "java",
+-- 		dependencies = {
+-- 			"neovim/nvim-lspconfig",
+-- 			"williamboman/mason.nvim",
+-- 			"williamboman/mason-lspconfig.nvim",
+-- 		},
+-- 		config = function()
+-- 			vim.api.nvim_create_autocmd("FileType", {
+-- 				pattern = "java",
+-- 				callback = function()
+-- 					-- Define pasta do workspace Java
+-- 					local home = os.getenv("HOME")
+-- 					local jdtls = require("jdtls")
+-- 					local root_markers = {
+-- 						".git",
+-- 						"mvnw",
+-- 						"gradlew",
+-- 						"pom.xml",
+-- 						"build.gradle",
+-- 					}
+-- 					local root_dir = require("jdtls.setup").find_root(root_markers)
+-- 					local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+--
+-- 					-- Configura o path do Mason
+-- 					local mason_path = vim.fn.glob(vim.fn.stdpath("data") .. "/mason/")
+-- 					local jdtls_path = mason_path .. "packages/jdtls/"
+--
+-- 					-- Configuração específica do sistema operacional
+-- 					local os_config = ""
+-- 					if vim.fn.has("mac") == 1 then
+-- 						os_config = "config_mac"
+-- 					elseif vim.fn.has("unix") == 1 then
+-- 						os_config = "config_linux"
+-- 					elseif vim.fn.has("win32") == 1 then
+-- 						os_config = "config_win"
+-- 					end
+--
+-- 					-- Configuração do Java Debug
+-- 					local bundles = {}
+-- 					local mason_registry = require("mason-registry")
+--
+-- 					-- Adiciona suporte ao debug se disponível
+-- 					if mason_registry.is_installed("java-debug-adapter") then
+-- 						local java_dbg_pkg = mason_registry.get_package("java-debug-adapter")
+-- 						local java_dbg_path = java_dbg_pkg:get_install_path()
+-- 						local jar_patterns = {
+-- 							java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
+-- 						}
+-- 						for _, pattern in ipairs(jar_patterns) do
+-- 							for _, bundle in ipairs(vim.split(vim.fn.glob(pattern), "\n")) do
+-- 								if bundle ~= "" then
+-- 									table.insert(bundles, bundle)
+-- 								end
+-- 							end
+-- 						end
+-- 					end
+--
+-- 					-- Adiciona suporte a testes se disponível
+-- 					if mason_registry.is_installed("java-test") then
+-- 						local java_test_pkg = mason_registry.get_package("java-test")
+-- 						local java_test_path = java_test_pkg:get_install_path()
+-- 						local jar_patterns = {
+-- 							java_test_path .. "/extension/server/*.jar",
+-- 						}
+-- 						for _, pattern in ipairs(jar_patterns) do
+-- 							for _, bundle in ipairs(vim.split(vim.fn.glob(pattern), "\n")) do
+-- 								if bundle ~= "" then
+-- 									table.insert(bundles, bundle)
+-- 								end
+-- 							end
+-- 						end
+-- 					end
+--
+-- 					-- Configuração do JDTLS
+-- 					local config = {
+-- 						cmd = {
+-- 							"java",
+-- 							"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+-- 							"-Dosgi.bundles.defaultStartLevel=4",
+-- 							"-Declipse.product=org.eclipse.jdt.ls.core.product",
+-- 							"-Dlog.protocol=true",
+-- 							"-Dlog.level=ALL",
+-- 							"-Xmx1g",
+-- 							"--add-modules=ALL-SYSTEM",
+-- 							"--add-opens",
+-- 							"java.base/java.util=ALL-UNNAMED",
+-- 							"--add-opens",
+-- 							"java.base/java.lang=ALL-UNNAMED",
+-- 							"-jar",
+-- 							vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
+-- 							"-configuration",
+-- 							jdtls_path .. os_config,
+-- 							"-data",
+-- 							workspace_folder,
+-- 						},
+-- 						root_dir = root_dir,
+-- 						settings = {
+-- 							java = {
+-- 								eclipse = {
+-- 									downloadSources = true,
+-- 								},
+-- 								configuration = {
+-- 									updateBuildConfiguration = "interactive",
+-- 								},
+-- 								maven = {
+-- 									downloadSources = true,
+-- 								},
+-- 								implementationsCodeLens = {
+-- 									enabled = true,
+-- 								},
+-- 								referencesCodeLens = {
+-- 									enabled = true,
+-- 								},
+-- 								format = {
+-- 									enabled = true,
+-- 								},
+-- 							},
+-- 							signatureHelp = {
+-- 								enabled = true,
+-- 							},
+-- 							completion = {
+-- 								favoriteStaticMembers = {
+-- 									"org.junit.jupiter.api.Assertions.*",
+-- 									"org.mockito.Mockito.*",
+-- 									"org.assertj.core.api.Assertions.*",
+-- 								},
+-- 							},
+-- 							sources = {
+-- 								organizeImports = {
+-- 									starThreshold = 9999,
+-- 									staticStarThreshold = 9999,
+-- 								},
+-- 							},
+-- 							codeGeneration = {
+-- 								toString = {
+-- 									template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
+-- 								},
+-- 								useBlocks = true,
+-- 							},
+-- 						},
+-- 						init_options = {
+-- 							bundles = bundles,
+-- 						},
+-- 						on_attach = function(client, bufnr)
+-- 							-- Keymaps específicos do Java
+-- 							local opts = { buffer = bufnr }
+-- 							vim.keymap.set("n", "<A-o>", jdtls.organize_imports, opts)
+-- 							vim.keymap.set("n", "crv", jdtls.extract_variable, opts)
+-- 							vim.keymap.set(
+-- 								"v",
+-- 								"crv",
+-- 								[[<ESC><CMD>lua require('jdtls').extract_variable(true)<CR>]],
+-- 								opts
+-- 							)
+-- 							vim.keymap.set("n", "crc", jdtls.extract_constant, opts)
+-- 							vim.keymap.set(
+-- 								"v",
+-- 								"crc",
+-- 								[[<ESC><CMD>lua require('jdtls').extract_constant(true)<CR>]],
+-- 								opts
+-- 							)
+-- 							vim.keymap.set(
+-- 								"v",
+-- 								"crm",
+-- 								[[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
+-- 								opts
+-- 							)
+--
+-- 							-- Setup do DAP se disponível
+-- 							if JAVA_DAP_ACTIVE then
+-- 								require("jdtls").setup_dap({ hotcodereplace = "auto" })
+-- 								require("jdtls.dap").setup_dap_main_class_configs()
+-- 							end
+-- 						end,
+-- 					}
+--
+-- 					-- Inicia o JDTLS
+-- 					require("jdtls").start_or_attach(config)
+-- 				end,
+-- 			})
+-- 		end,
+-- 	},
+-- }
