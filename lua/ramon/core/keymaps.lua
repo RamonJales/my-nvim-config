@@ -2,7 +2,7 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
-keymap.set("n", "<leader>nh", ":nohl<CR>", {desc = "Clear search highlights" })
+keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- window menagement
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
@@ -16,3 +16,4 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
+keymap.set("n", "<C-a>", "ggVG", { desc = "Select all" }) -- Select all content
