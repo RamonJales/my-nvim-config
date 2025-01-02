@@ -4,7 +4,7 @@ return {
 		config = function()
 			require("toggleterm").setup({
 				size = 20, -- Tamanho do terminal, pode ajustar conforme necessário
-				open_mapping = [[<C-j>]], -- Atalho para abrir o terminal (Ctrl + j)
+				open_mapping = [[<c-\>]], -- Atalho para abrir o terminal (Ctrl + j)
 				direction = "horizontal", -- Pode ser 'horizontal', 'vertical' ou 'float'
 				shade_filetypes = {},
 				shade_terminals = true, -- Ativa a sombra no terminal
