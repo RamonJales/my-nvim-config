@@ -19,3 +19,13 @@ from nvim configurations.
 In `plugins` we have the all plugins the you want in your nvim. The `init.lua` file from `/plugins` directory is for plugins tha dont need specific configurations. The separation struct is for each file in plugins has your own specific configuration.
 
 For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
+
+### My shortcuts
+
+- tmux:
+  - You can navigate in tmux windows with `Ctrl + hjkl`.
+- telescope:
+  - You can navigate in telescope window with `Ctrl + hjkl`.
+- auto-session:
+  - You can save the session with `<Space>ws`
+  - You can restore the session with `<Space>wr`
