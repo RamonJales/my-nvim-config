@@ -2,21 +2,94 @@
 
 My OS is: Manjaro. So if you use a windows or something else, remember to adapt.
 
-In `~/.config/nvim/` directory put `init.lua` file and `lua/ramon` directory you downloded from this repository. Of course, you must, if you want, change de `lua/ramon` for `lua/"your-name"`.
-The plugins will be installed automatically, if this not happen, go to `Lazy` window and install the plugins.
+A personal Neovim configuration built with Lua, focusing on performance and modularity.
 
-If telescope does not works, so install `Ripgrep`.
+OS Note: This configuration was designed on Manjaro/Pop!_OS (Linux). If you are using macOS or Windows (via WSL), ensure you adapt the external dependencies accordingly.
 
-Install a clipboard provider, like `xclip` or `xsel`.
+## Prerequisites
+Before installing, ensure you have the following tools installed on your system
 
-Install `lazygit` with your package.
+```Bash
+sudo apt install neovim ripgrep xclip lazygit build-essential
+```
+
+Note: A Nerd Font is recommended for icons to render correctly.
+
+## Installation
+
+1. Standard Installation
+
+    This will install the configuration keeping the original namespace (ramon).
+  
+    1.1 Clone the repository:
+    
+    ```Bash
+    git clone https://github.com/RamonJales/my-nvim-config.git ~/.config/nvim
+    ```
+    1.2 Open Neovim.
+
+
+2. Custom Installation (Rename to "your-name")
+
+    If you want to personalize the configuration structure (change lua/ramon to lua/yourname), follow these steps after cloning:
+    
+    2.1 Enter the config directory:
+    
+    ```Bash
+    cd ~/.config/nvim
+    ```
+    
+    2.2 Choose your new namespace name (Replace your_name with your name):
+    
+    ```Bash
+    export NEW_NAME="your_name"
+    ```
+    
+    2.3 Rename the directory:
+    
+    ```Bash
+    mv lua/ramon lua/$NEW_NAME
+    ```
+    
+    2.4 Update all references in files: This command will search for "ramon" in all `.lua` files and replace it with your new name automatically:
+    
+    ```Bash
+    grep -rl "ramon" . | xargs sed -i "s/ramon/$NEW_NAME/g"
+    ```
+    
+    2.5 Start Neovim.
+
+## Coments
+
+- If telescope does not works, so install `Ripgrep`.
+
+- Install a clipboard provider, like `xclip` or `xsel`.
+
+- Install `lazygit` with your package.
 
 The file `init.lua` in root directory calls `core` and `lazy` files.
 
-The file `init.lua` from core directory calls the `keymaps` nad `options` file. The `keymaps` file contains the shortcuts and their descriptions from these. And the `options` has general options
-from nvim configurations.
+The file `init.lua` from core directory calls the `keymaps` nad `options` file. The `keymaps` file contains the shortcuts and their descriptions from these. And the `options` has general options from nvim configurations.
 
 In `plugins` we have the all plugins the you want in your nvim. The `init.lua` file from `/plugins` directory is for plugins tha dont need specific configurations. The separation struct is for each file in plugins has your own specific configuration.
+
+## Project Structure
+
+- `init.lua` (Root): Bootstraps the configuration by calling the core modules and the Lazy plugin manager.
+
+- `lua/ramon/core/`:
+
+   - `init.lua`: Orchestrates the core settings.
+
+   - `options.lua`: General Neovim settings (line numbers, tabs, etc).
+
+   - `keymaps.lua`: Native keybindings and descriptions.
+
+- `lua/ramon/plugins/`:
+
+   - `init.lua`: Contains plugins that don't require extensive configuration.
+
+   - `[plugin-name].lua`: Individual configuration files for complex plugins (e.g., lsp, treesitter, telescope).
 
 For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
 
