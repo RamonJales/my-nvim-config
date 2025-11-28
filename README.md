@@ -20,7 +20,7 @@ In `plugins` we have the all plugins the you want in your nvim. The `init.lua` f
 
 For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
 
-### My shortcuts
+## My shortcuts
 
 - tmux:
   - You can navigate in tmux windows with `Ctrl + hjkl`.
@@ -29,3 +29,34 @@ For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
 - auto-session:
   - You can save the session with `<Space>ws`
   - You can restore the session with `<Space>wr`
+
+## How to uninstall
+
+1. User Configuration (Your Lua scripts):
+
+```Bash
+rm -rf ~/.config/nvim
+```
+
+2. Plugin Data (Where Lazy downloads code for Telescope, Treesitter, etc.):
+
+```Bash
+rm -rf ~/.local/share/nvim
+```
+
+3. State and History (Logs, undo history, swap files):
+
+```Bash
+rm -rf ~/.local/state/nvim
+```
+4. Cache (Temporary files):
+
+```Bash
+rm -rf ~/.cache/nvim
+```
+
+5. Location of downloaded plugins (Lazy, Mason, etc.) and Logs/Undo history:
+
+```Bash
+rm -rf ~/.local/share/nvim ~/.local/state/nvim
+```
