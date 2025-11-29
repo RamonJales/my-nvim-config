@@ -5,6 +5,8 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
+		"williamboman/mason.nvim",
+		"williamboman/mason-lspconfig.nvim",
 	},
 	config = function()
 		-- import lspconfig plugin
@@ -78,119 +80,142 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
-		mason_lspconfig.setup_handlers({
-			-- Default handler for all installed servers
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["jdtls"] = function()
-				-- Configure Java server
-				lspconfig["jdtls"].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["graphql"] = function()
-				-- Configure GraphQL server
-				lspconfig["graphql"].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["clangd"] = function()
-				-- Configure C/C++ server
-				lspconfig["clangd"].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["lua_ls"] = function()
-				-- Configure Lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
-					settings = {
-						Lua = {
-							diagnostics = {
-								globals = { "vim" },
-							},
-							completion = {
-								callSnippet = "Replace",
-							},
-						},
-					},
-				})
-			end,
-			["ltex"] = function()
-				-- Configure LanguageTool server for natural language
-				lspconfig["ltex"].setup({
-					capabilities = capabilities,
-					settings = {
-						ltex = {
-							language = "en",
-							diagnosticSeverity = "information",
-						},
-					},
-				})
-			end,
-			["eslint"] = function()
-				-- Configure ESLint server
-				lspconfig["eslint"].setup({
-					capabilities = capabilities,
-					settings = {
-						codeAction = {
-							disableRuleComment = {
-								enable = true,
-							},
-							showDocumentation = {
-								enable = true,
+		mason_lspconfig.setup({
+
+			ensure_installed = {
+				"html",
+				"cssls",
+				"tailwindcss",
+				"lua_ls",
+				"pyright",
+				"jdtls",
+				"clangd",
+				"bashls",
+				"dockerls",
+				"gopls",
+				"jsonls",
+				"graphql",
+				"eslint",
+				"groovyls",
+				"ltex",
+			},
+			automatic_installation = true,
+
+			handlers = {
+				-- Default handler for all installed servers
+				function(server_name)
+					lspconfig[server_name].setup({
+						capabilities = capabilities,
+					})
+				end,
+
+				["jdtls"] = function()
+					-- Configure Java server
+					lspconfig["jdtls"].setup({
+						capabilities = capabilities,
+					})
+				end,
+				["graphql"] = function()
+					-- Configure GraphQL server
+					lspconfig["graphql"].setup({
+						capabilities = capabilities,
+					})
+				end,
+				["clangd"] = function()
+					-- Configure C/C++ server
+					lspconfig["clangd"].setup({
+						capabilities = capabilities,
+					})
+				end,
+				["lua_ls"] = function()
+					-- Configure Lua server (with special settings)
+					lspconfig["lua_ls"].setup({
+						capabilities = capabilities,
+						settings = {
+							Lua = {
+								diagnostics = {
+									globals = { "vim" },
+								},
+								completion = {
+									callSnippet = "Replace",
+								},
 							},
 						},
-					},
-				})
-			end,
-			["gopls"] = function()
-				-- Configure Go server
-				lspconfig["gopls"].setup({
-					capabilities = capabilities,
-					settings = {
-						gopls = {
-							analyses = {
-								unusedparams = true,
+					})
+				end,
+				["ltex"] = function()
+					-- Configure LanguageTool server for natural language
+					lspconfig["ltex"].setup({
+						capabilities = capabilities,
+						settings = {
+							ltex = {
+								language = "en",
+								diagnosticSeverity = "information",
 							},
-							staticcheck = true,
 						},
-					},
-				})
-			end,
-			["groovyls"] = function()
-				-- Configure Groovy server
-				lspconfig["groovyls"].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["bashls"] = function()
-				-- Configure Bash server
-				lspconfig["bashls"].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["dockerls"] = function()
-				-- Configure Docker server
-				lspconfig["dockerls"].setup({
-					capabilities = capabilities,
-				})
-			end,
-			-- ["jsonls"] = function()
-			-- 	-- Configure JSON server
-			-- 	lspconfig["jsonls"].setup({
-			-- 		capabilities = capabilities,
-			-- 		settings = {
-			-- 			json = {
-			-- 				schemas = require("schemastore").json.schemas(),
-			-- 				validate = { enable = true },
-			-- 			},
-			-- 		},
-			-- 	})
-			-- end,
+					})
+				end,
+				["eslint"] = function()
+					-- Configure ESLint server
+					lspconfig["eslint"].setup({
+						capabilities = capabilities,
+						settings = {
+							codeAction = {
+								disableRuleComment = {
+									enable = true,
+								},
+								showDocumentation = {
+									enable = true,
+								},
+							},
+						},
+					})
+				end,
+				["gopls"] = function()
+					-- Configure Go server
+					lspconfig["gopls"].setup({
+						capabilities = capabilities,
+						settings = {
+							gopls = {
+								analyses = {
+									unusedparams = true,
+								},
+								staticcheck = true,
+							},
+						},
+					})
+				end,
+				["groovyls"] = function()
+					-- Configure Groovy server
+					lspconfig["groovyls"].setup({
+						capabilities = capabilities,
+					})
+				end,
+				["bashls"] = function()
+					-- Configure Bash server
+					lspconfig["bashls"].setup({
+						capabilities = capabilities,
+					})
+				end,
+				["dockerls"] = function()
+					-- Configure Docker server
+					lspconfig["dockerls"].setup({
+						capabilities = capabilities,
+					})
+				end,
+				-- ["jsonls"] = function()
+				-- 	-- Configure JSON server
+				-- 	lspconfig["jsonls"].setup({
+				-- 		capabilities = capabilities,
+				-- 		settings = {
+				-- 			json = {
+				-- 				schemas = require("schemastore").json.schemas(),
+				-- 				validate = { enable = true },
+				-- 			},
+				-- 		},
+				-- 	})
+				-- end,
+			},
 		})
 	end,
 }
