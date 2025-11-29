@@ -4,9 +4,10 @@ My OS is: Manjaro. So if you use a windows or something else, remember to adapt.
 
 A personal Neovim configuration built with Lua, focusing on performance and modularity.
 
-OS Note: This configuration was designed on Manjaro/Pop!_OS (Linux). If you are using macOS or Windows (via WSL), ensure you adapt the external dependencies accordingly.
+OS Note: This configuration was designed on Manjaro/Pop!\_OS (Linux). If you are using macOS or Windows (via WSL), ensure you adapt the external dependencies accordingly.
 
 ## Prerequisites
+
 Before installing, ensure you have the following tools installed on your system
 
 ```Bash
@@ -19,45 +20,45 @@ Note: A Nerd Font is recommended for icons to render correctly.
 
 1. Standard Installation
 
-    This will install the configuration keeping the original namespace (ramon).
-  
-    1.1 Clone the repository:
-    
-    ```Bash
-    git clone https://github.com/RamonJales/my-nvim-config.git ~/.config/nvim
-    ```
-    1.2 Open Neovim.
+   This will install the configuration keeping the original namespace (ramon).
 
+   1.1 Clone the repository:
+
+   ```Bash
+   git clone https://github.com/RamonJales/my-nvim-config.git ~/.config/nvim
+   ```
+
+   1.2 Open Neovim.
 
 2. Custom Installation (Rename to "your-name")
 
-    If you want to personalize the configuration structure (change lua/ramon to lua/yourname), follow these steps after cloning:
-    
-    2.1 Enter the config directory:
-    
-    ```Bash
-    cd ~/.config/nvim
-    ```
-    
-    2.2 Choose your new namespace name (Replace your_name with your name):
-    
-    ```Bash
-    export NEW_NAME="your_name"
-    ```
-    
-    2.3 Rename the directory:
-    
-    ```Bash
-    mv lua/ramon lua/$NEW_NAME
-    ```
-    
-    2.4 Update all references in files: This command will search for "ramon" in all `.lua` files and replace it with your new name automatically:
-    
-    ```Bash
-    grep -rl "ramon" . | xargs sed -i "s/ramon/$NEW_NAME/g"
-    ```
-    
-    2.5 Start Neovim.
+   If you want to personalize the configuration structure (change lua/ramon to lua/yourname), follow these steps after cloning:
+
+   2.1 Enter the config directory:
+
+   ```Bash
+   cd ~/.config/nvim
+   ```
+
+   2.2 Choose your new namespace name (Replace your_name with your name):
+
+   ```Bash
+   export NEW_NAME="your_name"
+   ```
+
+   2.3 Rename the directory:
+
+   ```Bash
+   mv lua/ramon lua/$NEW_NAME
+   ```
+
+   2.4 Update all references in files: This command will search for "ramon" in all `.lua` files and replace it with your new name automatically:
+
+   ```Bash
+   grep -rl "ramon" . | xargs sed -i "s/ramon/$NEW_NAME/g"
+   ```
+
+   2.5 Start Neovim.
 
 ## Coments
 
@@ -78,30 +79,33 @@ In `plugins` we have the all plugins the you want in your nvim. The `init.lua` f
 - `init.lua` (Root): Bootstraps the configuration by calling the core modules and the Lazy plugin manager.
 
 - `lua/ramon/core/`:
+  - `init.lua`: Orchestrates the core settings.
 
-   - `init.lua`: Orchestrates the core settings.
+  - `options.lua`: General Neovim settings (line numbers, tabs, etc).
 
-   - `options.lua`: General Neovim settings (line numbers, tabs, etc).
-
-   - `keymaps.lua`: Native keybindings and descriptions.
+  - `keymaps.lua`: Native keybindings and descriptions.
 
 - `lua/ramon/plugins/`:
+  - `init.lua`: Contains plugins that don't require extensive configuration.
 
-   - `init.lua`: Contains plugins that don't require extensive configuration.
-
-   - `[plugin-name].lua`: Individual configuration files for complex plugins (e.g., lsp, treesitter, telescope).
+  - `[plugin-name].lua`: Individual configuration files for complex plugins (e.g., lsp, treesitter, telescope).
 
 For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
 
 ## My shortcuts
 
 #### tmux:
-  - You can navigate in tmux windows with `Ctrl + hjkl`.
+
+- You can navigate in tmux windows with `Ctrl + hjkl`.
+
 #### telescope:
-  - You can navigate in telescope window with `Ctrl + hjkl`.
+
+- You can navigate in telescope window with `Ctrl + hjkl`.
+
 #### auto-session:
-  - You can save the session with `<Space>ws`
-  - You can restore the session with `<Space>wr`
+
+- You can save the session with `<Space>ws`
+- You can restore the session with `<Space>wr`
 
 #### Trouble
 
@@ -109,13 +113,35 @@ A modern interface to visualize diagnostic lists (LSP), references, quickfixes, 
 
 Keymaps
 
-| Shortcut | Action | Description |
-| :--- | :--- | :--- |
-| `<leader>xw` | **Workspace Diagnostics** | Shows errors/warnings for the **entire project**. |
-| `<leader>xd` | **Document Diagnostics** | Shows errors/warnings for the **current file** only. |
-| `<leader>xt` | **Todo List** | Lists all `TODO`, `FIX`, `HACK` items found in the project. |
-| `<leader>xq` | **Quickfix List** | Opens the quickfix list (e.g., compilation results). |
-| `<leader>xl` | **Location List** | Opens the location list (window specific). |
+| Shortcut     | Action                    | Description                                                 |
+| :----------- | :------------------------ | :---------------------------------------------------------- |
+| `<leader>xw` | **Workspace Diagnostics** | Shows errors/warnings for the **entire project**.           |
+| `<leader>xd` | **Document Diagnostics**  | Shows errors/warnings for the **current file** only.        |
+| `<leader>xt` | **Todo List**             | Lists all `TODO`, `FIX`, `HACK` items found in the project. |
+| `<leader>xq` | **Quickfix List**         | Opens the quickfix list (e.g., compilation results).        |
+| `<leader>xl` | **Location List**         | Opens the location list (window specific).                  |
+
+#### lsp
+
+Core configuration for code intelligence, powered by nvim-lspconfig and mason. Handles navigation, refactoring, and native diagnostics.
+
+**Keymaps**
+
+| Shortcut     | Action                   | Description                                                                          |
+| :----------- | :----------------------- | :----------------------------------------------------------------------------------- |
+| `gd`         | **Go to Definition**     | Jumps to the definition of the symbol under the cursor (opens in Telescope).         |
+| `gD`         | **Go to Declaration**    | Jumps to the declaration of the symbol (useful for C/C++ headers).                   |
+| `gR`         | **Show References**      | Lists all references to the symbol under the cursor (opens in Telescope).            |
+| `gi`         | **Go to Implementation** | Lists implementations for the interface/class under the cursor (opens in Telescope). |
+| `gt`         | **Type Definition**      | Jumps to the definition of the type of the symbol under the cursor.                  |
+| `K`          | **Hover Documentation**  | Displays documentation and signature information for the symbol under the cursor.    |
+| `<leader>ca` | **Code Actions**         | Opens available code actions (fixes, refactors) for the current cursor/selection.    |
+| `<leader>rn` | **Smart Rename**         | Renames the symbol under the cursor across the entire project context.               |
+| `<leader>D`  | **Buffer Diagnostics**   | Lists all errors and warnings for the **current file** (opens in Telescope).         |
+| `<leader>d`  | **Line Diagnostics**     | Shows the error/warning message for the **current line** in a floating window.       |
+| `[d`         | **Prev Diagnostic**      | Jumps to the previous error or warning in the buffer.                                |
+| `]d`         | **Next Diagnostic**      | Jumps to the next error or warning in the buffer.                                    |
+| `<leader>rs` | **Restart LSP**          | Restarts the LSP server (useful if the server hangs or stops responding).            |
 
 ## How to uninstall
 
@@ -136,6 +162,7 @@ rm -rf ~/.local/share/nvim
 ```Bash
 rm -rf ~/.local/state/nvim
 ```
+
 4. Cache (Temporary files):
 
 ```Bash
