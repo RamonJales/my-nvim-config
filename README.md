@@ -95,13 +95,27 @@ For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
 
 ## My shortcuts
 
-- tmux:
+#### tmux:
   - You can navigate in tmux windows with `Ctrl + hjkl`.
-- telescope:
+#### telescope:
   - You can navigate in telescope window with `Ctrl + hjkl`.
-- auto-session:
+#### auto-session:
   - You can save the session with `<Space>ws`
   - You can restore the session with `<Space>wr`
+
+#### Trouble
+
+A modern interface to visualize diagnostic lists (LSP), references, quickfixes, and TODOs.
+
+Keymaps
+
+| Shortcut | Action | Description |
+| :--- | :--- | :--- |
+| `<leader>xw` | **Workspace Diagnostics** | Shows errors/warnings for the **entire project**. |
+| `<leader>xd` | **Document Diagnostics** | Shows errors/warnings for the **current file** only. |
+| `<leader>xt` | **Todo List** | Lists all `TODO`, `FIX`, `HACK` items found in the project. |
+| `<leader>xq` | **Quickfix List** | Opens the quickfix list (e.g., compilation results). |
+| `<leader>xl` | **Location List** | Opens the location list (window specific). |
 
 ## How to uninstall
 
