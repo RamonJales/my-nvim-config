@@ -125,6 +125,17 @@ return {
 					-- Configure C/C++ server
 					lspconfig["clangd"].setup({
 						capabilities = capabilities,
+						cmd = {
+							"clangd",
+							"--background-index",
+							"--clang-tidy",
+							"--header-insertion=iwyu",
+							"--completion-style=detailed",
+							"--function-arg-placeholders",
+							"--fallback-style=llvm",
+							-- A LINHA MÁGICA É ESSA AQUI EMBAIXO:
+							"--query-driver=/usr/bin/c++,/usr/bin/**/clang-*,/usr/bin/**/g++-*,/usr/bin/g++",
+						},
 					})
 				end,
 				["lua_ls"] = function()
