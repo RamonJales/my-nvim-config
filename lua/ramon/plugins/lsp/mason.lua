@@ -9,10 +9,6 @@ return {
 	config = function()
 		-- import mason
 		local mason = require("mason")
-
-		-- import mason-lspconfig
-		local mason_lspconfig = require("mason-lspconfig")
-
 		local mason_tool_installer = require("mason-tool-installer")
 
 		-- enable mason and configure icons
@@ -24,30 +20,6 @@ return {
 					package_uninstalled = "✗",
 				},
 			},
-		})
-
-		mason_lspconfig.setup({
-			-- list of servers for mason to install
-			ensure_installed = {
-				"html",
-				"cssls",
-				"tailwindcss",
-				"lua_ls",
-				"pyright",
-				"jdtls",
-				"clangd",
-				"ast_grep",
-				"bashls",
-				"dockerls",
-				"gopls",
-				--			"hls", descomentar quando o haskell estiver instalado
-				"jsonls",
-				"graphql",
-				"eslint",
-				"groovyls",
-				"ltex",
-			},
-			automatic_installation = true,
 		})
 
 		mason_tool_installer.setup({
