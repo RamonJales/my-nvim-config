@@ -14,6 +14,7 @@ return {
       highlight = {
         enable = true,
       },
+      auto_install = true,
       -- enable indentation
       indent = { enable = true },
       -- enable autotagging (w/ nvim-ts-autotag plugin)
@@ -43,6 +44,7 @@ return {
         "query",
         "vimdoc",
         "c",
+        "cpp",
         "kotlin",
         "agda",
         "go",
@@ -59,5 +61,9 @@ return {
         },
       },
     })
+
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+    vim.opt.foldlevel = 99
   end,
 }

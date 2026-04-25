@@ -6,6 +6,11 @@ return {
 
     conform.setup({
       formatters_by_ft = {
+        bash = { "shfmt" },
+        sh = { "shfmt" },
+        zsh = { "shfmt" },
+        c = { "clang_format" },
+        cpp = { "clang_format" },
         javascript = { "prettier" },
         typescript = { "prettier" },
         javascriptreact = { "prettier" },
@@ -20,11 +25,18 @@ return {
         liquid = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        java = { "google-java-format" },
+        go = { "gofmt" },
       },
-      format_on_save = {
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 1000,
+      formatters = {
+        clang_format = {
+          append_args = {
+            "--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, ContinuationIndentWidth: 4, UseTab: Never}",
+          },
+        },
+        prettier = {
+          append_args = { "--tab-width", "4" },
+        },
       },
     })
 

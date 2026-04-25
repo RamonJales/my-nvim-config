@@ -28,12 +28,15 @@ return {
 				"stylua", -- lua formatter
 				"isort", -- python formatter
 				"black", -- python formatter
-				"pylint",
-				"eslint_d",
-				"google-java-format",
-				"checkstyle",
-				"java-debug-adapter",
-				"java-test",
+				"pylint", -- python linter
+				"eslint_d", -- javascript/typescript linter
+				"google-java-format", -- java formatter
+				"checkstyle", -- java linter
+				"clang-format", -- c/cpp formatter
+				"shfmt", -- shell formatter
+				"shellcheck", -- shell linter
+				"java-debug-adapter", -- java debug support
+				"java-test", -- java test support
 			},
 		})
 	end,

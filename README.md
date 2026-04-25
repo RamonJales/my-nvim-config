@@ -1,176 +1,495 @@
-# my-nvim-config
+# My Neovim Config
 
-My OS is: Manjaro. So if you use a windows or something else, remember to adapt.
+Config pessoal de Neovim em Lua, modularizada em `lua/ramon`, com foco em produtividade, LSP, busca rápida, Git e suporte multi-linguagem.
 
-A personal Neovim configuration built with Lua, focusing on performance and modularity.
+Esta documentação foi atualizada com base no comportamento real da configuração.
 
-OS Note: This configuration was designed on Manjaro/Pop!\_OS (Linux). If you are using macOS or Windows (via WSL), ensure you adapt the external dependencies accordingly.
+## Visão geral
 
-## Prerequisites
+Hoje sua config entrega:
 
-Before installing, ensure you have the following tools installed on your system
+- gerenciamento de plugins com `lazy.nvim`
+- dashboard inicial com `alpha-nvim`
+- tema `ayu` (variante `mirage`)
+- statusline com `lualine`
+- tabs com `bufferline`
+- explorer com `nvim-tree`
+- busca e navegação com `telescope`
+- LSP com `nvim-lspconfig` + `mason.nvim`
+- autocompletion com `nvim-cmp` + `LuaSnip`
+- syntax highlighting e textobjects via `nvim-treesitter`
+- formatação com `conform.nvim`
+- lint com `nvim-lint`
+- terminal embutido com `toggleterm`
+- Git com `gitsigns` e `lazygit.nvim`
+- sessões com `auto-session`
+- comentários, surround, substitute, autopairs, which-key, todo-comments, dressing e Copilot
 
-```Bash
-sudo apt install neovim ripgrep xclip lazygit build-essential
+## Estrutura
+
+```text
+init.lua
+lua/ramon/core/
+  init.lua
+  keymaps.lua
+  options.lua
+lua/ramon/plugins/
+  init.lua
+  alpha.lua
+  autopairs.lua
+  auto-session.lua
+  bufferline.lua
+  colorscheme.lua
+  comment.lua
+  dressing.lua
+  formatting.lua
+  gitsigns.lua
+  indent-blankline.lua
+  java.lua
+  java.lu          # arquivo legado/comentado
+  lazygit.lua
+  linting.lua
+  lualine.lua
+  nvim-cmp.lua
+  nvim-tree.lua
+  substitute.lua
+  surround.lua
+  telescope.lua
+  todo-comments.lua
+  toggleterm.lua
+  treesitter.lua
+  trouble.lua
+  which-key.lua
+lua/ramon/plugins/lsp/
+  lspconfig.lua
+  mason.lua
 ```
 
-Note: A Nerd Font is recommended for icons to render correctly.
+## Dependências do sistema
 
-## Installation
+Base recomendada para Linux:
 
-1. Standard Installation
+```bash
+neovim git ripgrep xclip lazygit gcc g++ make node npm python go
+```
 
-   This will install the configuration keeping the original namespace (ramon).
+Para Java:
 
-   1.1 Clone the repository:
+```bash
+java 21+
+```
 
-   ```Bash
-   git clone https://github.com/RamonJales/my-nvim-config.git ~/.config/nvim
-   ```
+Observações:
 
-   1.2 Open Neovim.
+- `ripgrep` é obrigatório para o `Telescope live_grep`.
+- `xclip` ou equivalente é necessário para clipboard do sistema.
+- `node` e `npm` são usados por vários servidores e ferramentas JS/TS.
+- `go` é usado pelo `gofmt` e por alguns pacotes instalados pelo Mason.
+- Java no momento depende de `Java 21+` para o `jdtls` funcionar.
 
-2. Custom Installation (Rename to "your-name")
+## Plugins e funcionalidades
 
-   If you want to personalize the configuration structure (change lua/ramon to lua/yourname), follow these steps after cloning:
+### Core
 
-   2.1 Enter the config directory:
+- `vim-tmux-navigator`: navegação entre splits do Neovim e panes do tmux com `Ctrl + h/j/k/l`
+- `copilot.vim`: sugestões de IA inline
 
-   ```Bash
-   cd ~/.config/nvim
-   ```
+### UI
 
-   2.2 Choose your new namespace name (Replace your_name with your name):
+- `alpha-nvim`: dashboard inicial com atalhos para novo arquivo, explorer, Telescope e restore de sessão
+- `neovim-ayu`: tema principal
+- `lualine.nvim`: statusline customizada
+- `bufferline.nvim`: tabs em modo "tabs"
+- `which-key.nvim`: popup de atalhos
+- `dressing.nvim`: melhora `vim.ui.select` e `vim.ui.input`
+- `indent-blankline.nvim`: guias de indentação
 
-   ```Bash
-   export NEW_NAME="your_name"
-   ```
+### Navegação e arquivos
 
-   2.3 Rename the directory:
+- `nvim-tree.lua`: explorer lateral
+- `telescope.nvim`: busca de arquivos, grep, arquivos recentes e referências LSP
+- `auto-session`: salvar/restaurar sessão por diretório
+- `toggleterm.nvim`: terminal embutido
 
-   ```Bash
-   mv lua/ramon lua/$NEW_NAME
-   ```
+### Edição
 
-   2.4 Update all references in files: This command will search for "ramon" in all `.lua` files and replace it with your new name automatically:
+- `nvim-autopairs`: fechamento automático de pares
+- `Comment.nvim`: comentários inteligentes, incluindo JSX/TSX/Svelte/HTML via Treesitter
+- `nvim-surround`: manipulação de pares e delimitadores
+- `substitute.nvim`: substituição com motion/linha/visual
 
-   ```Bash
-   grep -rl "ramon" . | xargs sed -i "s/ramon/$NEW_NAME/g"
-   ```
+### Código
 
-   2.5 Start Neovim.
+- `nvim-lspconfig`: LSP
+- `mason.nvim`: instalação de servidores e ferramentas
+- `nvim-cmp`: autocomplete
+- `LuaSnip` + `friendly-snippets`: snippets
+- `nvim-treesitter`: parser e highlighting por árvore sintática
+- `conform.nvim`: formatação
+- `nvim-lint`: lint
+- `trouble.nvim`: diagnósticos, quickfix, location list e TODOs
+- `todo-comments.nvim`: destaque de `TODO`, `FIX`, `HACK`, etc.
 
-## Coments
+### Git
 
-- If telescope does not works, so install `Ripgrep`.
+- `gitsigns.nvim`: hunk signs, stage/reset/preview/blame/diff
+- `lazygit.nvim`: interface do LazyGit dentro do Neovim
 
-- Install a clipboard provider, like `xclip` or `xsel`.
+## Keymaps
 
-- Install `lazygit` with your package.
+Leader: `Space`
 
-The file `init.lua` in root directory calls `core` and `lazy` files.
+### Gerais
 
-The file `init.lua` from core directory calls the `keymaps` nad `options` file. The `keymaps` file contains the shortcuts and their descriptions from these. And the `options` has general options from nvim configurations.
+| Atalho | Ação |
+| --- | --- |
+| `<leader>nh` | limpar highlights da busca |
+| `<C-a>` | selecionar tudo |
+| `<C-y>` | copiar seleção para clipboard |
 
-In `plugins` we have the all plugins the you want in your nvim. The `init.lua` file from `/plugins` directory is for plugins tha dont need specific configurations. The separation struct is for each file in plugins has your own specific configuration.
+### Splits e tabs
 
-## Project Structure
+| Atalho | Ação |
+| --- | --- |
+| `<leader>sv` | split vertical |
+| `<leader>sh` | split horizontal |
+| `<leader>se` | equalizar splits |
+| `<leader>sx` | fechar split atual |
+| `<leader>to` | abrir nova tab |
+| `<leader>tx` | fechar tab atual |
+| `<leader>tn` | próxima tab |
+| `<leader>tp` | tab anterior |
+| `<leader>tf` | abrir buffer atual em nova tab |
 
-- `init.lua` (Root): Bootstraps the configuration by calling the core modules and the Lazy plugin manager.
+### Tmux
 
-- `lua/ramon/core/`:
-  - `init.lua`: Orchestrates the core settings.
+| Atalho | Ação |
+| --- | --- |
+| `<C-h>` | navegar para a janela/pane à esquerda |
+| `<C-j>` | navegar para baixo |
+| `<C-k>` | navegar para cima |
+| `<C-l>` | navegar para a direita |
 
-  - `options.lua`: General Neovim settings (line numbers, tabs, etc).
+### Explorer (`nvim-tree`)
 
-  - `keymaps.lua`: Native keybindings and descriptions.
+| Atalho | Ação |
+| --- | --- |
+| `<leader>ee` | alternar explorer |
+| `<leader>ef` | abrir explorer focado no arquivo atual |
+| `<leader>ec` | colapsar árvore |
+| `<leader>er` | atualizar explorer |
 
-- `lua/ramon/plugins/`:
-  - `init.lua`: Contains plugins that don't require extensive configuration.
+### Telescope
 
-  - `[plugin-name].lua`: Individual configuration files for complex plugins (e.g., lsp, treesitter, telescope).
+| Atalho | Ação |
+| --- | --- |
+| `<leader>ff` | buscar arquivos |
+| `<leader>fr` | arquivos recentes |
+| `<leader>fs` | live grep |
+| `<leader>fc` | buscar string sob o cursor |
+| `<C-j>` | próximo item no Telescope |
+| `<C-k>` | item anterior no Telescope |
+| `<C-q>` | enviar seleção para quickfix |
 
-For more information: https://www.josean.com/posts/how-to-setup-neovim-2024
+### Sessões
 
-## My shortcuts
+| Atalho | Ação |
+| --- | --- |
+| `<leader>ws` | salvar sessão do diretório atual |
+| `<leader>wr` | restaurar sessão do diretório atual |
 
-#### tmux:
+### Terminal
 
-- You can navigate in tmux windows with `Ctrl + hjkl`.
+| Atalho | Ação |
+| --- | --- |
+| `<C-\>` | abrir/fechar terminal horizontal |
+| `<C-t>` | sair do modo terminal para o normal |
 
-#### telescope:
+### Formatação e lint
 
-- You can navigate in telescope window with `Ctrl + hjkl`.
+| Atalho | Ação |
+| --- | --- |
+| `<leader>mp` | formatar arquivo ou seleção |
+| `<leader>l` | rodar lint manualmente |
 
-#### auto-session:
+### LSP
 
-- You can save the session with `<Space>ws`
-- You can restore the session with `<Space>wr`
+| Atalho | Ação |
+| --- | --- |
+| `gd` | ir para definições |
+| `gD` | ir para declaração |
+| `gR` | listar referências |
+| `gi` | listar implementações |
+| `gt` | listar definições de tipo |
+| `K` | hover/documentação |
+| `<leader>ca` | code actions |
+| `<leader>rn` | renomear símbolo |
+| `<leader>D` | diagnósticos do buffer |
+| `<leader>d` | diagnóstico da linha |
+| `[d` | diagnóstico anterior |
+| `]d` | próximo diagnóstico |
+| `<leader>rs` | reiniciar LSP |
 
-#### Trouble
+### Trouble
 
-A modern interface to visualize diagnostic lists (LSP), references, quickfixes, and TODOs.
+| Atalho | Ação |
+| --- | --- |
+| `<leader>xw` | diagnósticos do workspace |
+| `<leader>xd` | diagnósticos do documento |
+| `<leader>xq` | quickfix |
+| `<leader>xl` | location list |
+| `<leader>xt` | TODOs/notes |
 
-Keymaps
+### Git
 
-| Shortcut     | Action                    | Description                                                 |
-| :----------- | :------------------------ | :---------------------------------------------------------- |
-| `<leader>xw` | **Workspace Diagnostics** | Shows errors/warnings for the **entire project**.           |
-| `<leader>xd` | **Document Diagnostics**  | Shows errors/warnings for the **current file** only.        |
-| `<leader>xt` | **Todo List**             | Lists all `TODO`, `FIX`, `HACK` items found in the project. |
-| `<leader>xq` | **Quickfix List**         | Opens the quickfix list (e.g., compilation results).        |
-| `<leader>xl` | **Location List**         | Opens the location list (window specific).                  |
+| Atalho | Ação |
+| --- | --- |
+| `<leader>lg` | abrir LazyGit |
+| `]h` | próximo hunk |
+| `[h` | hunk anterior |
+| `<leader>hs` | stage hunk |
+| `<leader>hr` | reset hunk |
+| `<leader>hS` | stage buffer |
+| `<leader>hR` | reset buffer |
+| `<leader>hu` | undo stage hunk |
+| `<leader>hp` | preview hunk |
+| `<leader>hb` | blame da linha |
+| `<leader>hB` | alternar blame inline |
+| `<leader>hd` | diff atual |
+| `<leader>hD` | diff contra `~` |
+| `ih` | textobject do hunk |
 
-#### lsp
+### Substituição
 
-Core configuration for code intelligence, powered by nvim-lspconfig and mason. Handles navigation, refactoring, and native diagnostics.
+| Atalho | Ação |
+| --- | --- |
+| `s` | substituir com motion |
+| `ss` | substituir linha |
+| `S` | substituir até o fim da linha |
+| `s` em visual | substituir seleção |
 
-**Keymaps**
+### Comentários e surround
 
-| Shortcut     | Action                   | Description                                                                          |
-| :----------- | :----------------------- | :----------------------------------------------------------------------------------- |
-| `gd`         | **Go to Definition**     | Jumps to the definition of the symbol under the cursor (opens in Telescope).         |
-| `gD`         | **Go to Declaration**    | Jumps to the declaration of the symbol (useful for C/C++ headers).                   |
-| `gR`         | **Show References**      | Lists all references to the symbol under the cursor (opens in Telescope).            |
-| `gi`         | **Go to Implementation** | Lists implementations for the interface/class under the cursor (opens in Telescope). |
-| `gt`         | **Type Definition**      | Jumps to the definition of the type of the symbol under the cursor.                  |
-| `K`          | **Hover Documentation**  | Displays documentation and signature information for the symbol under the cursor.    |
-| `<leader>ca` | **Code Actions**         | Opens available code actions (fixes, refactors) for the current cursor/selection.    |
-| `<leader>rn` | **Smart Rename**         | Renames the symbol under the cursor across the entire project context.               |
-| `<leader>D`  | **Buffer Diagnostics**   | Lists all errors and warnings for the **current file** (opens in Telescope).         |
-| `<leader>d`  | **Line Diagnostics**     | Shows the error/warning message for the **current line** in a floating window.       |
-| `[d`         | **Prev Diagnostic**      | Jumps to the previous error or warning in the buffer.                                |
-| `]d`         | **Next Diagnostic**      | Jumps to the next error or warning in the buffer.                                    |
-| `<leader>rs` | **Restart LSP**          | Restarts the LSP server (useful if the server hangs or stops responding).            |
+Esses plugins usam atalhos padrão:
 
-## How to uninstall
+- `Comment.nvim`: `gcc`, `gc`, textobjects visuais, etc.
+- `nvim-surround`: `ys`, `cs`, `ds`, etc.
 
-1. User Configuration (Your Lua scripts):
+### Treesitter
 
-```Bash
+| Atalho | Ação |
+| --- | --- |
+| `<C-Space>` | expandir seleção incremental |
+| `<BS>` | reduzir seleção incremental |
+
+## Linguagens suportadas
+
+### Treesitter parsers configurados
+
+- `json`
+- `java`
+- `javascript`
+- `typescript`
+- `tsx`
+- `yaml`
+- `python`
+- `html`
+- `css`
+- `markdown`
+- `markdown_inline`
+- `svelte`
+- `graphql`
+- `bash`
+- `lua`
+- `vim`
+- `dockerfile`
+- `gitignore`
+- `query`
+- `vimdoc`
+- `c`
+- `cpp`
+- `kotlin`
+- `agda`
+- `go`
+- `haskell`
+- `sql`
+
+### LSP configurado
+
+| Linguagem | Servidor |
+| --- | --- |
+| Bash / Shell | `bashls` |
+| C / C++ | `clangd` |
+| CSS | `cssls` |
+| Dockerfile | `dockerls` |
+| Go | `gopls` |
+| GraphQL | `graphql` |
+| Groovy | `groovyls` |
+| HTML | `html` |
+| JSON | `jsonls` |
+| Kotlin | `kotlin_language_server` |
+| Lua | `lua_ls` |
+| Markdown / texto | `ltex` |
+| Python | `pyright` |
+| SQL | `sqls` |
+| Svelte | `svelte` |
+| TypeScript / JavaScript | `ts_ls` |
+| Tailwind | `tailwindcss` |
+| YAML | `yamlls` |
+| Java | `nvim-jdtls` + `jdtls` |
+
+### Formatadores configurados
+
+| Linguagem | Ferramenta |
+| --- | --- |
+| Bash / Sh / Zsh | `shfmt` |
+| C / C++ | `clang-format` |
+| CSS / HTML / JSON / YAML / Markdown / GraphQL / Liquid | `prettier` |
+| JavaScript / TypeScript / React / Svelte | `prettier` |
+| Lua | `stylua` |
+| Python | `isort` + `black` |
+| Java | `google-java-format` |
+| Go | `gofmt` |
+
+### Linters configurados
+
+| Linguagem | Ferramenta |
+| --- | --- |
+| Bash / Sh | `shellcheck` |
+| JavaScript / TypeScript / React / Svelte | `eslint_d` |
+| Python | `pylint` |
+| Java | `checkstyle` |
+
+## O que foi corrigido
+
+Nesta revisão, foram feitos os seguintes ajustes:
+
+- `conform.nvim` foi reativado e integrado à config
+- `Treesitter` passou a usar `auto_install = true`
+- LSP para `TypeScript/JavaScript` foi adicionado com `ts_ls`
+- LSP para `Svelte`, `YAML`, `Kotlin` e `SQL` foi adicionado
+- formatadores para `C/C++`, `Shell`, `Java` e `Go` foram adicionados
+- linters para `Shell` e `Java` foram adicionados
+- `mason-lspconfig` deixou de autoativar servidores por trás, evitando conflito com `jdtls`
+- Java foi separado para uma configuração dedicada em `lua/ramon/plugins/java.lua`
+- Java agora avisa explicitamente quando falta `Java 21+`
+- o `README` foi atualizado para refletir a config real
+
+## Estado atual das linguagens
+
+Validado em modo headless:
+
+- `C`: `clangd` sobe corretamente
+- `TypeScript`: `ts_ls` sobe corretamente
+- `YAML`: `yamlls` sobe corretamente
+- `Java`: a configuração está pronta, mas o servidor não sobe no seu ambiente atual porque o runtime disponível é `Java 18`, e o `jdtls` atual exige `Java 21+`
+
+## Java: o que falta para funcionar
+
+Hoje o bloqueio do Java não está mais na config do Neovim. Está no runtime do sistema.
+
+Seu ambiente atual:
+
+- `java -version` retorna `Java 18`
+- o `jdtls` instalado pelo Mason exige `Java 21+`
+
+Para ativar Java, você precisa de uma destas opções:
+
+1. Instalar Java 21 e deixar ele como padrão do sistema.
+2. Instalar Java 21 e apontar só o `jdtls` para ele com `JDTLS_JAVA_HOME`.
+
+Exemplo:
+
+```bash
+export JDTLS_JAVA_HOME=/caminho/do/java-21
+```
+
+ou
+
+```bash
+export JAVA_HOME=/caminho/do/java-21
+```
+
+Depois disso, abra um arquivo `.java` novamente.
+
+## C/C++: observação importante
+
+O `clangd` está funcionando, mas para projetos reais ele fica muito melhor quando você fornece dados de build.
+
+Recomendado para C/C++:
+
+- gerar `compile_commands.json`
+- ou criar um `compile_flags.txt`
+- garantir que `gcc/g++` ou `clang/clang++` estejam instalados
+
+Se você usa CMake:
+
+```bash
+cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+ln -sf build/compile_commands.json ./compile_commands.json
+```
+
+Sem isso, o `clangd` até sobe, mas pode falhar em includes padrão, flags e análise mais precisa do projeto.
+
+## Como adicionar uma nova linguagem
+
+Sempre siga esta ordem:
+
+1. Adicione o parser em `lua/ramon/plugins/treesitter.lua`.
+2. Adicione o servidor LSP em `lua/ramon/plugins/lsp/lspconfig.lua`.
+3. Adicione o pacote do Mason em `lua/ramon/plugins/lsp/mason.lua` se houver ferramenta externa.
+4. Adicione o formatter em `lua/ramon/plugins/formatting.lua`.
+5. Adicione o linter em `lua/ramon/plugins/linting.lua`.
+6. Se a linguagem tiver particularidades grandes, crie um arquivo próprio em `lua/ramon/plugins/<linguagem>.lua`, como foi feito com Java.
+
+Exemplo mental:
+
+- syntax highlight: `treesitter.lua`
+- inteligência de código: `lspconfig.lua`
+- instalação de binários: `mason.lua`
+- formatação: `formatting.lua`
+- lint: `linting.lua`
+
+## Troubleshooting rápido
+
+### Telescope não acha texto
+
+Instale `ripgrep`.
+
+### Clipboard não funciona
+
+Instale `xclip` ou outro provider equivalente.
+
+### Java não sobe
+
+Instale `Java 21+` e configure `JDTLS_JAVA_HOME` ou `JAVA_HOME`.
+
+### C/C++ reconhece mal includes
+
+Gere `compile_commands.json` ou `compile_flags.txt`.
+
+### Algum servidor não sobe
+
+Abra:
+
+```vim
+:Mason
+:LspInfo
+:checkhealth
+```
+
+## Instalação
+
+```bash
+git clone https://github.com/RamonJales/my-nvim-config.git ~/.config/nvim
+nvim
+```
+
+## Desinstalação
+
+```bash
 rm -rf ~/.config/nvim
-```
-
-2. Plugin Data (Where Lazy downloads code for Telescope, Treesitter, etc.):
-
-```Bash
 rm -rf ~/.local/share/nvim
-```
-
-3. State and History (Logs, undo history, swap files):
-
-```Bash
 rm -rf ~/.local/state/nvim
-```
-
-4. Cache (Temporary files):
-
-```Bash
 rm -rf ~/.cache/nvim
-```
-
-5. Location of downloaded plugins (Lazy, Mason, etc.) and Logs/Undo history:
-
-```Bash
-rm -rf ~/.local/share/nvim ~/.local/state/nvim
 ```
