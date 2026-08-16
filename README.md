@@ -24,6 +24,7 @@ Hoje sua config entrega:
 - Git com `gitsigns` e `lazygit.nvim`
 - sessões com `auto-session`
 - comentários, surround, substitute, autopairs, which-key, todo-comments, dressing e Copilot
+- visualização/edição de CSV em formato de tabela com `csvview.nvim`
 
 ## Estrutura
 
@@ -117,6 +118,7 @@ Observações:
 - `Comment.nvim`: comentários inteligentes, incluindo JSX/TSX/Svelte/HTML via Treesitter
 - `nvim-surround`: manipulação de pares e delimitadores
 - `substitute.nvim`: substituição com motion/linha/visual
+- `csvview.nvim`: visualização de arquivos CSV como tabela, com textobjects de campo (`if`/`af`) e navegação estilo Excel (`Tab`/`S-Tab`, `Enter`/`S-Enter`)
 
 ### Código
 
@@ -202,7 +204,7 @@ Leader: `Space`
 
 | Atalho | Ação |
 | --- | --- |
-| `<C-\>` | abrir/fechar terminal horizontal |
+| `<F7>` | abrir/fechar terminal horizontal |
 | `<C-t>` | sair do modo terminal para o normal |
 
 ### Formatação e lint
@@ -267,6 +269,12 @@ Leader: `Space`
 | `ss` | substituir linha |
 | `S` | substituir até o fim da linha |
 | `s` em visual | substituir seleção |
+
+### CSV
+
+| Atalho | Ação |
+| --- | --- |
+| `<leader>cv` | alternar visualização de CSV como tabela |
 
 ### Comentários e surround
 
