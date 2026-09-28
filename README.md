@@ -322,6 +322,7 @@ Esses plugins usam atalhos padrão:
 - `haskell`
 - `sql`
 - `vhdl`
+- `rust`
 
 ### LSP configurado
 
@@ -347,6 +348,7 @@ Esses plugins usam atalhos padrão:
 | YAML | `yamlls` |
 | Java | `nvim-jdtls` + `jdtls` |
 | VHDL | `vhdl_ls` (pacote Mason `rust_hdl`, sem mapeamento em `mason-lspconfig`) |
+| Rust | `rust_analyzer` (via Mason, com `check.command = "clippy"`) |
 
 ### Formatadores configurados
 
@@ -361,6 +363,7 @@ Esses plugins usam atalhos padrão:
 | Java | `google-java-format` |
 | Go | `gofmt` |
 | VHDL | `vsg` (pacote Mason `vhdl-style-guide`) |
+| Rust | `rustfmt` (binário do sistema, via toolchain ativa do `asdf`/`rustup`) |
 
 ### Linters configurados
 
@@ -370,6 +373,7 @@ Esses plugins usam atalhos padrão:
 | JavaScript / TypeScript / React / Svelte | `eslint_d` |
 | Python | `pylint` |
 | Java | `checkstyle` |
+| Rust | `clippy` (embutido via `rust_analyzer`, não passa pelo `nvim-lint`) |
 
 ## O que foi corrigido
 

@@ -148,6 +148,7 @@ return {
 			"kotlin_language_server",
 			"ltex",
 			"sqls",
+			"rust_analyzer",
 		}
 
 		mason_lspconfig.setup({
@@ -221,6 +222,16 @@ return {
 						unusedparams = true,
 					},
 					staticcheck = true,
+				},
+			},
+		})
+
+		setup_server("rust_analyzer", {
+			settings = {
+				["rust-analyzer"] = {
+					check = {
+						command = "clippy",
+					},
 				},
 			},
 		})

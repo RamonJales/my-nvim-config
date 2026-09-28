@@ -51,6 +51,7 @@ return {
         "haskell",
         "sql",
         "vhdl",
+        "rust",
       },
       incremental_selection = {
         enable = true,

@@ -29,6 +29,7 @@ return {
         go = { "gofmt" },
         vhd = { "vsg" },
         vhdl = { "vsg" },
+        rust = { "rustfmt" },
       },
       formatters = {
         clang_format = {
