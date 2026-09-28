@@ -27,6 +27,8 @@ return {
         python = { "isort", "black" },
         java = { "google-java-format" },
         go = { "gofmt" },
+        vhd = { "vsg" },
+        vhdl = { "vsg" },
       },
       formatters = {
         clang_format = {

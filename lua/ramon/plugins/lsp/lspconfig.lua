@@ -171,6 +171,7 @@ return {
 			"groovyls",
 			"kotlin_language_server",
 			"sqls",
+			"vhdl_ls",
 		}) do
 			setup_server(server_name)
 		end

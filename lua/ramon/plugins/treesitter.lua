@@ -50,6 +50,7 @@ return {
         "go",
         "haskell",
         "sql",
+        "vhdl",
       },
       incremental_selection = {
         enable = true,

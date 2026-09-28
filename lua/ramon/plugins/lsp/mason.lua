@@ -37,6 +37,8 @@ return {
 				"shellcheck", -- shell linter
 				"java-debug-adapter", -- java debug support
 				"java-test", -- java test support
+				"rust_hdl", -- vhdl language server (vhdl_ls), not mapped by mason-lspconfig
+				"vhdl-style-guide", -- vhdl formatter (vsg)
 			},
 		})
 	end,

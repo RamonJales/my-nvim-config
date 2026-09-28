@@ -65,6 +65,7 @@ Para validar uma mudança sem depender de UI interativa, dá para rodar o Neovim
 - **`init.vim.backup`** na raiz é a config legada em Vimscript, anterior à migração para Lua. Não é carregada por `init.lua`. Histórico, não ativo.
 - **`char-imgs-for-dashboard/imgs.txt`** guarda variações de header ASCII art para o dashboard do `alpha-nvim`, como referência pessoal — não é lido pelo Neovim em nenhum ponto do código.
 - Java requer runtime **Java 21+** para o `jdtls` subir (ver `README.md` → "Java: o que falta para funcionar" para o workaround via `JDTLS_JAVA_HOME`).
+- **VHDL (`vhdl_ls`) é um caso especial no fluxo de LSP**: o `mason-lspconfig` não tem mapeamento nome-do-servidor → pacote Mason para `vhdl_ls` (o pacote real chama-se `rust_hdl`). Por isso ele **não** entra na lista `ensure_installed` do `mason_lspconfig.setup(...)` em `lsp/lspconfig.lua` (isso falharia silenciosamente) — em vez disso, o pacote `rust_hdl` é instalado via `mason_tool_installer.ensure_installed` em `lsp/mason.lua`, e o servidor `vhdl_ls` é apenas registrado no loop `setup_server(...)` de `lsp/lspconfig.lua`. Se uma futura linguagem tiver o mesmo problema (servidor sem mapeamento no `mason-lspconfig`), siga o mesmo padrão: instalar o pacote pelo nome real do Mason em `mason.lua` e configurar o servidor pelo nome do `lspconfig` em `lspconfig.lua`.
 
 ## Manter esta documentação atualizada
 

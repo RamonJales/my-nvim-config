@@ -321,6 +321,7 @@ Esses plugins usam atalhos padrão:
 - `go`
 - `haskell`
 - `sql`
+- `vhdl`
 
 ### LSP configurado
 
@@ -345,6 +346,7 @@ Esses plugins usam atalhos padrão:
 | Tailwind | `tailwindcss` |
 | YAML | `yamlls` |
 | Java | `nvim-jdtls` + `jdtls` |
+| VHDL | `vhdl_ls` (pacote Mason `rust_hdl`, sem mapeamento em `mason-lspconfig`) |
 
 ### Formatadores configurados
 
@@ -358,6 +360,7 @@ Esses plugins usam atalhos padrão:
 | Python | `isort` + `black` |
 | Java | `google-java-format` |
 | Go | `gofmt` |
+| VHDL | `vsg` (pacote Mason `vhdl-style-guide`) |
 
 ### Linters configurados
 
